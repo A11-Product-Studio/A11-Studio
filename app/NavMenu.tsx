@@ -70,13 +70,16 @@ export default function NavMenu() {
         {/* Inner row — same container as page content for grid alignment */}
         <div className="max-w-[1240px] mx-auto w-full px-4 md:px-8 lg:px-0 flex items-center h-full">
           {/* ── Left: Logo mark 32×36px ────────────────────────────────── */}
+          {/* flex:1 so the left/right slots carry equal weight — keeps the
+              center nav optically centered on the page, not between the
+              narrow logo and the wider clock. */}
           <Link
             href="/"
             style={{
               display:       "block",
-              width:         32,
               height:        36,
-              flexShrink:    0,
+              flex:          "1 1 0",
+              minWidth:      0,
               pointerEvents: "auto",
             }}
           >
@@ -96,7 +99,7 @@ export default function NavMenu() {
           {/* ── Center: Nav links — gap 48px, 14px, capitalize ─────────── */}
           <nav
             aria-label="Main navigation"
-            style={{ flex: 1, display: "flex", justifyContent: "center" }}
+            style={{ flexShrink: 0, display: "flex", justifyContent: "center" }}
           >
             <div
               style={{
@@ -143,7 +146,8 @@ export default function NavMenu() {
               textAlign:     "right",
               textTransform: "capitalize",
               whiteSpace:    "nowrap",
-              flexShrink:    0,
+              flex:          "1 1 0",
+              minWidth:      0,
             }}
           >
             {time}
