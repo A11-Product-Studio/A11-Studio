@@ -241,11 +241,66 @@ function CTASection({
   text,
   buttonLabel,
   textGap = 36,
+  href,
 }: {
   text: string;
   buttonLabel: string;
   textGap?: number;
+  href?: string;
 }) {
+  const sharedProps = {
+    className:
+      "relative inline-flex items-center justify-center whitespace-nowrap capitalize",
+    style: {
+      height: "44px",
+      padding: "10px 20px",
+      borderRadius: 0,
+      background: "#282828",
+      border: "none",
+      fontFamily: "'System Unlicensed Trial', sans-serif",
+      fontWeight: 500,
+      fontSize: "15px",
+      lineHeight: 0.95,
+      letterSpacing: "-0.3px",
+      color: "#ffffff",
+      textDecoration: "none",
+      cursor: "pointer",
+      transition:
+        "scale 0.15s cubic-bezier(0.2, 0, 0, 1), opacity 0.15s cubic-bezier(0.2, 0, 0, 1)",
+    } as React.CSSProperties,
+    onMouseEnter: (e: React.MouseEvent<HTMLElement>) =>
+      (e.currentTarget.style.opacity = "0.9"),
+    onMouseLeave: (e: React.MouseEvent<HTMLElement>) => {
+      e.currentTarget.style.opacity = "1";
+      e.currentTarget.style.scale = "1";
+    },
+    onMouseDown: (e: React.MouseEvent<HTMLElement>) =>
+      (e.currentTarget.style.scale = "0.96"),
+    onMouseUp: (e: React.MouseEvent<HTMLElement>) =>
+      (e.currentTarget.style.scale = "1"),
+  };
+
+  // Button — Figma node 1725:9389: h 44px, px 20px, py 10px, square corners,
+  // fill #282828. The 4×4 white dot is positioned 10px from the top-right
+  // corner (over the right padding), not inline with the label.
+  const buttonInner = (
+    <>
+      {buttonLabel}
+      <span
+        aria-hidden
+        style={{
+          position: "absolute",
+          top: "10px",
+          right: "10px",
+          width: "4px",
+          height: "4px",
+          borderRadius: "1px",
+          background: "#ffffff",
+        }}
+      />
+    </>
+  );
+
   return (
     <div
       className="flex flex-col items-center pt-[147px] pb-[147px]"
@@ -268,34 +323,15 @@ function CTASection({
         {text}
       </p>
 
-      {/* Button: h 44.436px, px 15.553px, py 6.665px, rounded 111.091px */}
-      <button
-        className="inline-flex items-center justify-center whitespace-nowrap capitalize"
-        style={{
-          height: "44.436px",
-          padding: "6.665px 15.553px",
-          borderRadius: "111.091px",
-          background: "#282328",
-          border: "none",
-          fontFamily: "'System Unlicensed Trial', sans-serif",
-          fontWeight: 500,
-          fontSize: "15.553px",
-          lineHeight: 1.09,
-          color: "#ffffff",
-          cursor: "pointer",
-          transition:
-            "scale 0.15s cubic-bezier(0.2, 0, 0, 1), opacity 0.15s cubic-bezier(0.2, 0, 0, 1)",
-        }}
-        onMouseEnter={e => (e.currentTarget.style.opacity = "0.9")}
-        onMouseLeave={e => {
-          e.currentTarget.style.opacity = "1";
-          e.currentTarget.style.scale = "1";
-        }}
-        onMouseDown={e => (e.currentTarget.style.scale = "0.96")}
-        onMouseUp={e => (e.currentTarget.style.scale = "1")}
-      >
-        {buttonLabel}
-      </button>
+      {href ? (
+        <Link href={href} {...sharedProps}>
+          {buttonInner}
+        </Link>
+      ) : (
+        <button type="button" {...sharedProps}>
+          {buttonInner}
+        </button>
+      )}
     </div>
   );
 }
@@ -351,6 +387,7 @@ export default function WorkPage() {
           text={"Built with craft. Driven by passion.\nShipped without excuses."}
           buttonLabel="Discover Studio"
           textGap={36}
+          href="/studio"
         />
 
         {/* Group 2: Districts + Token Studio */}
@@ -360,7 +397,7 @@ export default function WorkPage() {
         {/* CTA 2 — text-to-button gap: 45px (Figma: 4361.58 - 4316.72 = 44.86px) */}
         <CTASection
           text={"Looking designed is easy now.\nCaring enough to craft it isn't."}
-          buttonLabel="Read Manifest"
+          buttonLabel="Read Manifesto"
           textGap={45}
         />
 
