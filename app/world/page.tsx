@@ -74,7 +74,7 @@ function buildCovePath(t: number): string {
 function ArrowUpRight() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden style={{ display: "block" }}>
-      <path d="M5 11L11 5M11 5H5.5M11 5V10.5" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M5 11L11 5M11 5H5.5M11 5V10.5" stroke={INK} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -188,12 +188,12 @@ function Card({ card, priority }: { card: CaseCard; priority?: boolean }) {
               height: 40,
               padding: "0 14px",
               borderRadius: 100,
-              background: INK,
-              boxShadow: "0 8px 24px rgba(40,35,40,0.22)",
+              background: "#ffffff",
+              boxShadow: "0 8px 24px rgba(40,35,40,0.18)",
               whiteSpace: "nowrap",
             }}
           >
-            <span style={{ fontFamily: "var(--font-system), sans-serif", fontWeight: 500, fontSize: 14, lineHeight: 1, letterSpacing: "-0.14px", color: "#fff" }}>
+            <span style={{ fontFamily: "var(--font-system), sans-serif", fontWeight: 500, fontSize: 14, lineHeight: 1, letterSpacing: "-0.14px", color: INK }}>
               View project
             </span>
             <ArrowUpRight />
@@ -231,7 +231,6 @@ export default function WorldPage() {
   return (
     <div style={{ backgroundColor: "#ffffff", minHeight: "100vh" }}>
       <style>{`
-        .wcs-wrap { --pad: clamp(24px, 8.93vw, 135px); }
         .wcs-grid { grid-template-columns: repeat(4, 1fr); }
         @media (max-width: 880px) { .wcs-grid { grid-template-columns: repeat(2, 1fr); row-gap: 28px; } }
         @media (max-width: 520px) { .wcs-grid { grid-template-columns: 1fr; row-gap: 28px; } }
@@ -239,13 +238,12 @@ export default function WorldPage() {
 
       <NavMenu />
 
-      <div className="wcs-wrap" style={{ maxWidth: 1512, margin: "0 auto", width: "100%" }}>
-        {/* ── Headline ────────────────────────────────────────────────────── */}
+      {/* Headline — same 1240px container as NavMenu */}
+      <div className="max-w-[1240px] mx-auto px-4 md:px-8 lg:px-0">
         <h1
           style={{
             margin: "104px 0 0",
-            padding: "0 var(--pad)",
-            maxWidth: "calc(616px + 2 * var(--pad))",
+            maxWidth: 616,
             fontFamily: "var(--font-system), sans-serif",
             fontWeight: 500,
             fontSize: "clamp(34px, 3.8vw, 56px)",
@@ -260,16 +258,16 @@ export default function WorldPage() {
           <br />
           crypto wallet.
         </h1>
-
-        {/* ── Card grid (near full-bleed: 10px gutters, 4px gaps) ──────────── */}
-        <div className="wcs-grid" style={{ display: "grid", columnGap: 4, padding: "84px 10px 0", margin: 0 }}>
-          {CARDS.map((c, i) => (
-            <Card key={c.title} card={c} priority={i === 0} />
-          ))}
-        </div>
-
-        <div style={{ height: 120 }} aria-hidden />
       </div>
+
+      {/* Card grid — near full-bleed: 10px gutters, 4px column gaps */}
+      <div className="wcs-grid" style={{ display: "grid", columnGap: 4, padding: "84px 10px 0", margin: 0 }}>
+        {CARDS.map((c, i) => (
+          <Card key={c.title} card={c} priority={i === 0} />
+        ))}
+      </div>
+
+      <div style={{ height: 120 }} aria-hidden />
     </div>
   );
 }
