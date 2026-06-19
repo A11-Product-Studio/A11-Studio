@@ -39,3 +39,31 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* ── Case-study template — collapse to one column on phones ───────────────────
+   The template (app/CaseStudy.tsx) is inline-styled with fixed percentage
+   columns and 1fr/1fr media grids tuned for the 1240px desktop grid. Below the
+   md breakpoint (768px, where the layout still tests clean) those columns get
+   crushed: the stats row overflows the viewport, the section header's h2 is
+   squeezed into ~40% width, and the hero copy is capped at 50%. These overrides
+   stack everything to a single column on phones. !important is required to beat
+   the component's inline styles; tablet/desktop are untouched. */
+@media (max-width: 767px) {
+  /* Hero description + meta: drop the 50% cap, use the full width. */
+  .cs-hero-aside { max-width: 100% !important; }
+
+  /* Section header: stack title above body instead of two cramped columns. */
+  .cs-section-header { flex-direction: column !important; gap: 16px !important; }
+  .cs-section-header > * { max-width: 100% !important; }
+
+  /* Stats: one per row (fixes the horizontal overflow) and drop the dividers. */
+  .cs-stats {
+    grid-template-columns: 1fr !important;
+    max-width: 100% !important;
+    row-gap: clamp(28px, 8vw, 40px);
+  }
+  .cs-stats > * { border-left: 0 !important; }
+
+  /* Media duos / tall-duos: stack the tiles so they keep a usable size. */
+  .cs-media-grid { grid-template-columns: 1fr !important; }
+}
