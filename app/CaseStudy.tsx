@@ -434,6 +434,7 @@ function AllProjects({ projects }: { projects: CSProject[] }) {
         <div
           ref={previewRef}
           aria-hidden
+          className="cs-allprojects-preview"
           style={{
             position: "absolute",
             left: "55%",
