@@ -142,6 +142,9 @@ export default function ContactPage() {
        *   Bottom-right cut: (652,496) → (565,618) → (652,618) = 87×122px triangle
        *   Bottom-left cut:  (0,595) → (264,595) → (326,618) → (0,618) = trapezoid
        */
+      /* Mobile card img: hidden by default, shown inside the mobile media query */
+      .cp-card-mobile { display: none; }
+
       .decorative-card {
         border-radius: 10px;
         overflow: hidden; /* clips pseudo-elements to card bounds; prevents shape bleed */
@@ -266,15 +269,22 @@ export default function ContactPage() {
           min-width: 0;
         }
 
-        /* Decorative card: reposition to right edge, mostly off-screen.
-         * Figma mobile: x=383 in 393px frame — only right-edge sliver visible.
-         * Use a smaller card so the partially-visible portion looks intentional. */
-        .decorative-card {
-          width: 320px !important;
-          height: 304px !important; /* 320 × 618/652 ≈ 304px */
-          left: auto !important;
-          right: -240px !important; /* shows ~80px at right edge */
-          top: 440px !important;   /* roughly where subtitle/form begins */
+        /* Desktop card hidden on mobile — replaced by .cp-card-mobile SVG img */
+        .decorative-card { display: none !important; }
+
+        /* Mobile card — rectangle_responsive.svg (Figma 263:12206, 711×373px).
+         * Figma: x=383 in 393px frame → left edge at right edge of screen.
+         * y=564 in 1410px frame, nav=76px → 488px below nav bottom.
+         * Only the leftmost ~10px is visible; the rest extends off-screen right. */
+        .cp-card-mobile {
+          display: block !important;
+          position: absolute;
+          top: 568px; /* 80px nav + 488px content offset */
+          left: calc(100% - 10px); /* left edge 10px from right edge of container */
+          width: 711px;
+          height: 373px;
+          pointer-events: none;
+          z-index: 0;
         }
       }
     `}</style>
@@ -311,6 +321,17 @@ export default function ContactPage() {
           pointerEvents: "none",
           zIndex: 0,
         }}
+      />
+
+      {/* Mobile-only card — rectangle_responsive.svg (Figma 263:12206).
+        * Positioned so its left edge is at x≈383 (right edge of a 393px viewport).
+        * Hidden on desktop via .cp-card-mobile { display:none } above. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        aria-hidden
+        alt=""
+        src="/assets/contact-page/rectangle_responsive.svg"
+        className="cp-card-mobile"
       />
 
       <PageEnter className="cp-page-enter" style={{ flex: 1, minHeight: 0, position: "relative", zIndex: 1 }}>
