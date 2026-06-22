@@ -173,7 +173,7 @@ function Cell({ image, aspect, sizes, phone }: { image: CSImage; aspect: string;
 // ─────────────────────────────────────────────────────────────────────────────
 function MediaBlock({ media }: { media: CSMedia }) {
   if (media.kind === "full") {
-    return <Cell image={media.image} aspect={media.aspect ?? "1241 / 760"} sizes="(max-width: 1280px) 100vw, 1240px" />;
+    return <Cell image={media.image} aspect={media.aspect ?? "1241 / 760"} sizes="100vw" />;
   }
 
   if (media.kind === "duo") {
@@ -526,7 +526,7 @@ export default function CaseStudy({ data }: { data: CaseStudyData }) {
   }, []);
 
   return (
-    <div style={{ backgroundColor: "#ffffff", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+    <div className="bleed-root" style={{ backgroundColor: "#ffffff", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       {/* Structured data: breadcrumb trail + the case study as a CreativeWork. */}
       {pathname && (
         <script
@@ -553,7 +553,7 @@ export default function CaseStudy({ data }: { data: CaseStudyData }) {
           transition: "opacity 0.9s cubic-bezier(0.22, 0.61, 0.36, 1), filter 0.9s cubic-bezier(0.22, 0.61, 0.36, 1)",
         }}
       >
-        <main className="max-w-[1240px] mx-auto px-4 md:px-8 lg:px-0 w-full" style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        <main className="w-full px-4 md:px-8 lg:px-5" style={{ flex: 1, display: "flex", flexDirection: "column" }}>
 
           {/* ── Hero: title, then intro copy + meta stacked beneath (Figma layout) ─ */}
           <div style={{ paddingTop: "clamp(48px, 6vw, 80px)", display: "flex", flexDirection: "column", gap: "clamp(20px, 2vw, 24px)" }}>
@@ -575,9 +575,9 @@ export default function CaseStudy({ data }: { data: CaseStudyData }) {
             )}
           </div>
 
-          {/* ── Hero image ─────────────────────────────────────────────────────── */}
+          {/* ── Hero image (full-width) ────────────────────────────────────────── */}
           <div style={{ marginTop: HERO_GAP }}>
-            <Cell image={{ ...data.hero, priority: true }} aspect="1241 / 760" sizes="(max-width: 1280px) 100vw, 1240px" />
+            <Cell image={{ ...data.hero, priority: true }} aspect="1241 / 760" sizes="100vw" />
           </div>
 
           {/* ── Content sections ───────────────────────────────────────────────── */}

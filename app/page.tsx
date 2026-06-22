@@ -184,11 +184,32 @@ function ZoomScale({ children }: { children: React.ReactNode }) {
   );
 }
 
+// Card overlay POSITIONS are expressed in cqw — percent of the card's own width
+// — so the label / description / logo stay at their designed spot on the image
+// as the full-bleed card scales (the logo lands on the right part of the photo
+// instead of drifting toward the corner). SIZES stay fixed px so the text and
+// logo render at their normal, intended size, not scaled up with the card.
+// The card opts in with container-type: inline-size. 1cqw = 12.4px at the
+// 1240px design width.
+const CARD_DESIGN_W = 1240;
+function cq(px: number): string {
+  return `${((px / CARD_DESIGN_W) * 100).toFixed(4)}cqw`;
+}
+
+// Middle-ground SIZING for overlay text / logo: grows with the card from the
+// design size up to CARD_MAX_SCALE×, then holds. Fixed px looked too small on
+// wide cards; the full ~2× proportional scale looked huge. This splits the
+// difference — design size at a 1240px card, capped at 1.5× (reached ~1860px).
+const CARD_MAX_SCALE = 1.5;
+function cqMid(px: number): string {
+  return `clamp(${px}px, ${((px / CARD_DESIGN_W) * 100).toFixed(4)}cqw, ${(px * CARD_MAX_SCALE).toFixed(2)}px)`;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function Chevron({ color }: { color: string }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src="/assets/slash.svg" alt="" aria-hidden style={{ height: 18, width: "auto", flexShrink: 0 }} />
+    <img src="/assets/slash.svg" alt="" aria-hidden style={{ height: cqMid(18), width: "auto", flexShrink: 0 }} />
   );
 }
 
@@ -205,6 +226,9 @@ function ProjectCard({ project, priority, zoom }: { project: Project; priority?:
       variants={surfaceVariants}
       style={{
         aspectRatio: "1240 / 769",
+        // Container for the cqw-based overlays below — the label / description /
+        // logo scale with the card so they stay locked to the image shape.
+        containerType: "inline-size",
         cursor: project.href ? "none" : "default",
         willChange: "transform, opacity, clip-path",
       }}
@@ -215,7 +239,7 @@ function ProjectCard({ project, priority, zoom }: { project: Project; priority?:
         <CoverImage
           src={project.image}
           alt={project.name}
-          sizes="(max-width: 1280px) 100vw, 1240px"
+          sizes="100vw"
           priority={priority}
         />
       ) : (
@@ -223,20 +247,24 @@ function ProjectCard({ project, priority, zoom }: { project: Project; priority?:
           <CoverImage
             src={project.image}
             alt={project.name}
-            sizes="(max-width: 1280px) 100vw, 1240px"
+            sizes="100vw"
             priority={priority}
           />
         </ImageReveal>
       )}
 
+      {/* Overlays positioned in cqw (% of card width) so the composition scales
+          with the full-bleed card — text and logo stay on the image shape,
+          exactly reproducing the 1240px design at any width. */}
       <div
-        className="absolute flex items-center gap-[9px] whitespace-nowrap capitalize"
+        className="absolute flex items-center whitespace-nowrap capitalize"
         style={{
-          top: project.labelTop,
-          left: 72,
+          top: cq(project.labelTop),
+          left: cq(72),
+          gap: cqMid(9),
           fontFamily: "var(--font-system), sans-serif",
           fontWeight: 500,
-          fontSize: project.labelPx,
+          fontSize: cqMid(project.labelPx),
           lineHeight: 1,
           letterSpacing: project.labelTracking,
           color: c,
@@ -250,15 +278,17 @@ function ProjectCard({ project, priority, zoom }: { project: Project; priority?:
       <p
         className="absolute m-0 whitespace-pre-wrap capitalize"
         style={{
-          top: project.descTop,
-          left: 72,
+          // Top tracks the label proportionally; the label→copy gap scales with
+          // the (middle-ground) type so the spacing stays right at any card size.
+          top: `calc(${cq(project.labelTop)} + ${cqMid(project.descTop - project.labelTop)})`,
+          left: cq(72),
           fontFamily: "var(--font-system), sans-serif",
           fontWeight: 500,
-          fontSize: "42px",
+          fontSize: cqMid(42),
           lineHeight: 0.95,
           letterSpacing: "-1.26px",
           color: c,
-          maxWidth: "521px",
+          maxWidth: cqMid(521),
           textWrap: "pretty",
         }}
       >
@@ -269,9 +299,9 @@ function ProjectCard({ project, priority, zoom }: { project: Project; priority?:
         <div
           style={{
             position: "absolute",
-            bottom: 64,
-            left: project.logoLeft,
-            height: project.logoHeight,
+            bottom: cq(64),
+            left: cq(project.logoLeft),
+            height: cqMid(project.logoHeight),
           }}
         >
           <Image
@@ -298,6 +328,12 @@ function ProjectCard({ project, priority, zoom }: { project: Project; priority?:
 }
 
 // ─── CTA interstitial ─────────────────────────────────────────────────────────
+// Vertical spacing scales with the (full-bleed) card width so the gap between
+// cards stays proportional on big screens — a fixed 147px felt cramped between
+// the much taller full-bleed cards. 147/1240 = 0.11855; min 147px (≤1280px),
+// capped at ~2× (294px).
+const CTA_PAD = "clamp(147px, calc((100vw - 40px) * 0.11855), 294px)";
+
 function CTASection({
   text,
   buttonLabel,
@@ -311,7 +347,7 @@ function CTASection({
 }) {
   return (
     <Reveal className="w-full" amount={0.4}>
-      <div className="flex flex-col items-center pt-[147px] pb-[147px]" style={{ gap: textGap }}>
+      <div className="flex flex-col items-center" style={{ gap: textGap, paddingTop: CTA_PAD, paddingBottom: CTA_PAD }}>
         <motion.p
           variants={itemVariants}
           className="m-0 text-center whitespace-pre-wrap"
@@ -367,6 +403,12 @@ function HeroReveal() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          // Centre the headline in the gap between the nav bar and the peeking
+          // card. The card top sits at (80vh - 9.3vw) at rest, the nav bar is
+          // 80px tall; padding the flex box to exactly [80px, 80vh - 9.3vw] makes
+          // align-items:center land the headline at that region's midpoint.
+          paddingTop: "80px",
+          paddingBottom: "calc(20vh + 9.3vw)",
           opacity: reduce ? 1 : opacityMV,
           scale: reduce ? 1 : scaleMV,
           y: reduce ? 0 : yMV,
@@ -393,15 +435,16 @@ function HeroReveal() {
       </motion.section>
 
       {/*
-       * Reserves scroll distance for the reveal — but stops short of a full
-       * viewport so the first case study already peeks ~15% of its height at
-       * rest. The card is 1240/769 and full-width up to 1240px, so 15% of its
-       * height ≈ min(9.3vw, 115px). We add back the 80px nav spacer + 10px grid
-       * top (90px) that sit above the grid, so the visible card peek lands on 15%.
+       * Reserves scroll distance for the reveal — but stops well short of a full
+       * viewport so the first case study peeks at rest. The base 9.3vw is ~15% of
+       * the full-bleed card's height (1240/769); the extra 20vh raises the whole
+       * at-rest composition (with the hero's 40vh bottom padding) so the headline
+       * and the card's peek sit higher. We add back the 80px nav spacer + 10px
+       * grid top (90px) that sit above the grid.
        */}
       <div
         ref={sentinel}
-        style={{ height: "calc(100vh - 90px - min(9.3vw, 115px))" }}
+        style={{ height: "calc(80vh - 90px - 9.3vw)" }}
         aria-hidden
       />
     </>
@@ -601,7 +644,7 @@ export default function WorkPage() {
 
         {/* Work grid — opaque layer that reveals over the hero (z-1) */}
         <PageEnter style={{ position: "relative", zIndex: 1, background: "#fff" }}>
-          <main className="max-w-[1240px] mx-auto flex flex-col gap-[10px] pt-[10px]">
+          <main className="w-full md:px-8 lg:px-5 flex flex-col gap-[10px] pt-[10px]">
             {/* Featured: ZoomScale IS the entrance — no Reveal wrapper (would compete) */}
             <ProjectCard project={PROJECTS[0]} priority zoom />
             <Reveal delay={0.1}><ProjectCard project={PROJECTS[1]} /></Reveal>
@@ -626,7 +669,7 @@ export default function WorkPage() {
             <Reveal delay={0.1}><ProjectCard project={PROJECTS[5]} /></Reveal>
           </main>
 
-          <div className="max-w-[1240px] mx-auto mt-[10px] pb-[10px]">
+          <div className="max-w-[1240px] mx-auto md:px-8 mt-[10px] pb-[10px] lg:max-w-none lg:px-5">
             <FooterBanner />
           </div>
         </PageEnter>

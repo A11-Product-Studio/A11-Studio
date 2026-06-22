@@ -105,7 +105,7 @@ export const metadata: Metadata = {
 // ── Page ────────────────────────────────────────────────────────────────────
 export default function WorldPage() {
   return (
-    <div style={{ backgroundColor: "#ffffff", minHeight: "100vh" }}>
+    <div className="bleed-root" style={{ backgroundColor: "#ffffff", minHeight: "100vh" }}>
       <style>{`
         .wcs-grid { grid-template-columns: repeat(4, 1fr); }
         @media (max-width: 880px) { .wcs-grid { grid-template-columns: repeat(2, 1fr); row-gap: 28px; } }
@@ -145,7 +145,7 @@ export default function WorldPage() {
       <NavMenu breadcrumb={[{ label: "Work", href: "/" }, { label: "World" }]} />
 
       <PageEnter>
-      <div className="max-w-[1240px] mx-auto px-4 md:px-8 lg:px-0">
+      <div className="w-full px-4 md:px-8 lg:px-5">
         {/* Headline */}
         <h1
           style={{
@@ -167,7 +167,7 @@ export default function WorldPage() {
         </h1>
 
         {/* Card grid — contained, aligned to the headline (Figma ~5px gaps) */}
-        <div className="wcs-grid" style={{ display: "grid", columnGap: 6, margin: "84px 0 0" }}>
+        <div className="wcs-grid" style={{ display: "grid", columnGap: 6, marginTop: 84 }}>
           {CARDS.map((c, i) => (
             <Card key={c.title} card={c} priority={i === 0} />
           ))}

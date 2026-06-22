@@ -56,7 +56,7 @@ function BreadcrumbNav({ breadcrumb }: { breadcrumb: Crumb[] }) {
           zIndex: 100, mixBlendMode: "difference", pointerEvents: "none",
         }}
       >
-        <div className="max-w-[1240px] mx-auto w-full px-4 md:px-8 lg:px-0 flex items-center h-full">
+        <div className="w-full px-4 md:px-8 lg:px-5 flex items-center h-full">
           <Link
             href="/"
             style={{ display: "block", height: 36, flex: "1 1 0", minWidth: 0, pointerEvents: "auto" }}
@@ -171,7 +171,7 @@ export default function NavMenu({ breadcrumb }: { breadcrumb?: Crumb[] } = {}) {
           zIndex: 100, pointerEvents: "none",
         }}
       >
-        <div className="max-w-[1240px] mx-auto w-full px-4 md:px-8 lg:px-0 flex items-center h-full">
+        <div className="w-full px-4 md:px-8 lg:px-5 flex items-center h-full">
           {/* ── Left: logo (flex:1 keeps the center nav optically centered) ── */}
           <Link href="/" style={{ display: "block", height: 36, flex: "1 1 0", minWidth: 0, pointerEvents: "auto" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
