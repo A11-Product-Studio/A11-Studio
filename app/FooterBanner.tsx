@@ -12,6 +12,20 @@ const FONT = "var(--font-system), sans-serif";
 export default function FooterBanner() {
   return (
     <Reveal amount={0.3}>
+      {/* Full-width footer (desktop ≥1024): the panel spans the 20px-gutter
+          width, so give it the SVG's own aspect ratio (1243/406) — the artwork
+          then scales UNIFORMLY (no stretch/distortion) instead of being squashed
+          to a fixed 406px height. The headline / CTA position + size scale with
+          the panel width (cqw), capped at 1.5× (44→66px), so they fill the
+          bigger panel proportionally. !important beats the component's inline
+          styles; mobile/tablet keep the fixed 406px panel. */}
+      <style>{`
+        @media (min-width: 768px) {
+          .fb-banner { aspect-ratio: 1243 / 406; height: auto !important; container-type: inline-size; }
+          .fb-headline { top: 6.4361cqw !important; font-size: clamp(44px, 3.5398cqw, 66px) !important; }
+          .fb-cta { top: 22.2043cqw !important; font-size: clamp(44px, 3.5398cqw, 66px) !important; }
+        }
+      `}</style>
       {/*
        * Dark banner — 406px tall, bg #282328, rounded 8.887px (Figma).
        * Text positions are absolute within this container, exact from Figma:

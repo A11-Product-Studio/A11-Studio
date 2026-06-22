@@ -18,6 +18,12 @@ html {
   scrollbar-gutter: stable;
 }
 
+/* Full-width pages (work / case studies / studio / world) carry `.bleed-root`
+   to clip any sub-pixel horizontal overflow from their edge-to-edge content. */
+.bleed-root {
+  overflow-x: clip;
+}
+
 /* Pinned hero — the section is fixed full-screen and centers its headline.
    On portrait/tall viewports (tablets), full-height centering leaves a large
    void above the text. Padding-bottom shrinks the flex content box from the

@@ -66,13 +66,13 @@ export const metadata: Metadata = {
 
 export default function StudioPage() {
   return (
-    <div style={{ backgroundColor: "#ffffff", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+    <div className="bleed-root" style={{ backgroundColor: "#ffffff", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <NavMenu />
 
       <PageEnter style={{ flex: 1 }}>
       <main style={{ flex: 1 }}>
         {/* Responsive container: 16px mobile, 32px tablet, 0 desktop (max-width handles margins) */}
-        <div className="max-w-[1240px] mx-auto px-4 md:px-8 lg:px-0">
+        <div className="w-full px-4 md:px-8 lg:px-5">
 
           {/* ── Hero section ──────────────────────────────────────────────── */}
           {/* Mobile: stacked, Tablet+: 2-col side by side */}
