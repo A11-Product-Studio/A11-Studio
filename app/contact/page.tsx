@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import NavMenu from "../NavMenu";
 import PageEnter from "../PageEnter";
-import rectangleImg from "../../public/assets/contact-page/rectangle.png";
 
 export const metadata: Metadata = {
   title: "Let's Talk",
@@ -125,16 +123,166 @@ function SendButton() {
 export default function ContactPage() {
   return (
     <>
-    {/* Scoped styles: placeholder opacity + cursor:none for the custom cursor */}
     {/* eslint-disable-next-line react/no-unknown-property */}
     <style>{`
+      /* Prevent the fixed NavMenu header from exposing the white body bg on wide viewports */
+      body { overflow-x: hidden; background: #302424; }
+
       .contact-form input::placeholder,
       .contact-form textarea::placeholder { color: rgba(255,255,255,0.5); }
       .contact-form input, .contact-form textarea { caret-color: #ffffff; }
+
+      /*
+       * Decorative card shape — built from the Figma vector (263:11868).
+       * The card is a plain rectangle. Two pseudo-elements painted in the page
+       * background (#302424) create the fixed-size corner cuts so the shape
+       * NEVER deforms when the container resizes.
+       *
+       * Screen-space polygon (652×618, after 90° CCW rotation from Figma local):
+       *   Bottom-right cut: (652,496) → (565,618) → (652,618) = 87×122px triangle
+       *   Bottom-left cut:  (0,595) → (264,595) → (326,618) → (0,618) = trapezoid
+       */
+      .decorative-card {
+        border-radius: 10px;
+        overflow: hidden; /* clips pseudo-elements to card bounds; prevents shape bleed */
+      }
+      .decorative-card::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 87px;
+        height: 122px;
+        background: #302424;
+        /* Triangle: covers (right-87,bottom-122) to (right,bottom) */
+        clip-path: polygon(100% 0%, 0% 100%, 100% 100%);
+        pointer-events: none;
+      }
+      .decorative-card::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 326px;
+        height: 23px;
+        background: #302424;
+        /* Trapezoid: (0,0)→(81%,0)→(100%,100%)→(0,100%) = 264px wide at top, 326px at bottom */
+        clip-path: polygon(0% 0%, 80.97% 0%, 100% 100%, 0% 100%);
+        pointer-events: none;
+      }
+
+      /* ── Mobile layout (≤767px) ─────────────────────────────────────────────
+       * Figma mobile frame: 393×1410px (scrollable).
+       * Single column, 20px side padding, elements in normal document flow.
+       * Vertical rhythm derived from Figma mobile y-positions.
+       */
+      @media (max-width: 767px) {
+        /* Root: release fixed 100vh, become scrollable */
+        .cp-root {
+          height: auto !important;
+          min-height: 100vh;
+          overflow: visible !important;
+          overflow-x: hidden !important;
+        }
+
+        /* PageEnter wrapper: stop flex-growing, let content define height */
+        .cp-page-enter {
+          flex: none !important;
+        }
+
+        /* Main: stack columns vertically, reset height */
+        .cp-main {
+          flex-direction: column !important;
+          height: auto !important;
+          padding-left: 20px !important;
+          padding-right: 20px !important;
+          padding-bottom: 60px;
+        }
+
+        /* Left column: static flow */
+        .cp-left {
+          flex: none !important;
+          width: 100% !important;
+          height: auto !important;
+          position: static !important;
+          min-width: 0;
+        }
+
+        /* Headline — Figma y=132, nav=80 → 52px below content start */
+        .cp-headline {
+          position: static !important;
+          font-size: clamp(32px, 10.2vw, 40px) !important;
+          margin-top: 52px !important;
+          margin-bottom: 0 !important;
+        }
+
+        /* Address — Figma: title bottom≈212, address y=308 → 96px gap */
+        .cp-address {
+          position: static !important;
+          max-width: none !important;
+          margin-top: 96px !important;
+        }
+
+        /* Social links — Figma y=1371 (near bottom); here just follow address */
+        .cp-social {
+          position: static !important;
+          margin-top: 40px !important;
+          bottom: auto !important;
+        }
+
+        /* Right column: static flow, below left content */
+        .cp-right {
+          flex: none !important;
+          width: 100% !important;
+          height: auto !important;
+          position: static !important;
+          min-width: 0;
+          padding-bottom: 40px;
+        }
+
+        /* Subtitle — Figma: address end≈468, subtitle y=588 → 120px gap */
+        .cp-subtitle {
+          position: static !important;
+          width: 100% !important;
+          margin-top: 120px !important;
+          margin-bottom: 0 !important;
+        }
+
+        /* Form — follows subtitle with 32px gap (Figma: subtitle end≈672, first field y=704) */
+        .contact-form {
+          position: static !important;
+          width: 100% !important;
+          margin-top: 32px !important;
+        }
+
+        /* Form rows: stack fields vertically with 32px gap */
+        .cp-form-row {
+          flex-direction: column !important;
+          gap: 32px !important;
+          margin-bottom: 32px !important;
+        }
+        .cp-form-row > * {
+          flex: none !important;
+          min-width: 0;
+        }
+
+        /* Decorative card: reposition to right edge, mostly off-screen.
+         * Figma mobile: x=383 in 393px frame — only right-edge sliver visible.
+         * Use a smaller card so the partially-visible portion looks intentional. */
+        .decorative-card {
+          width: 320px !important;
+          height: 304px !important; /* 320 × 618/652 ≈ 304px */
+          left: auto !important;
+          right: -240px !important; /* shows ~80px at right edge */
+          top: 440px !important;   /* roughly where subtitle/form begins */
+        }
+      }
     `}</style>
     <div
+      className="cp-root"
       style={{
         background: BG,
+        width: "100%",
         height: "100vh",
         overflow: "hidden",
         display: "flex",
@@ -144,31 +292,28 @@ export default function ContactPage() {
     >
       <NavMenu theme="dark" />
 
-      {/* Decorative shape — Figma group 263:11868, x=788 y=254 w=652 h=618 on 1512×1080 */}
+      {/* Decorative card shape — Figma group 263:11868, w=652 h=618.
+       * FIXED pixel size: the card never scales, so the fixed-pixel corner cuts
+       * (::after 87×122px, ::before 326×23px) always have identical proportions
+       * relative to the card regardless of viewport width.
+       * Positioned from the left with vw so it tracks the right column anchor.
+       */}
       <div
         aria-hidden
+        className="decorative-card"
         style={{
           position: "absolute",
-          left: "52.12vw",   /* 788/1512 */
-          top: "23.52vh",    /* 254/1080 */
-          width: "43.12vw",  /* 652/1512 */
-          height: "57.22vh", /* 618/1080 */
+          left: "52.12vw",   /* 788/1512 — tracks the right column start */
+          top: "23.52vh",    /* 254/1080 — tracks below nav */
+          width: 652,        /* fixed — Figma dimension, never scales */
+          height: 618,       /* fixed — Figma dimension, never scales */
+          background: "rgba(255,255,255,0.05)",
           pointerEvents: "none",
           zIndex: 0,
-          overflow: "hidden",
         }}
-      >
-        <Image
-          src={rectangleImg}
-          alt=""
-          fill
-          style={{ objectFit: "cover" }}
-          sizes="43vw"
-          priority
-        />
-      </div>
+      />
 
-      <PageEnter style={{ flex: 1, minHeight: 0, position: "relative", zIndex: 1 }}>
+      <PageEnter className="cp-page-enter" style={{ flex: 1, minHeight: 0, position: "relative", zIndex: 1 }}>
         {/*
          * Main layout — mirrors Figma 1512×1080 canvas (40px side margins):
          *   Left column  = 780px wide (headline + address + social)
@@ -178,16 +323,18 @@ export default function ContactPage() {
          * values with the 80px fixed nav height subtracted.
          */}
         <main
+          className="cp-main"
           style={{
             height: "100%",
             display: "flex",
-            gap: "clamp(16px, 2.24vw, 32px)",
+            gap: 0,
             paddingLeft: "clamp(20px, 2.65vw, 40px)",
             paddingRight: "clamp(20px, 2.65vw, 40px)",
           }}
         >
           {/* ── Left column ───────────────────────────────────────────────── */}
           <div
+            className="cp-left"
             style={{
               flex: "780 780 0",
               position: "relative",
@@ -197,6 +344,7 @@ export default function ContactPage() {
           >
             {/* Headline — Figma y=200, nav=80 → top=120px */}
             <h1
+              className="cp-headline"
               style={{
                 position: "absolute",
                 top: "clamp(60px, 11.11vh, 120px)",
@@ -216,6 +364,7 @@ export default function ContactPage() {
 
             {/* Address block — Figma y=472, nav=80 → top=392px */}
             <address
+              className="cp-address"
               style={{
                 position: "absolute",
                 top: "clamp(220px, 36.3vh, 392px)",
@@ -241,6 +390,7 @@ export default function ContactPage() {
 
             {/* Social links — Figma y=1020, bottom=60px */}
             <div
+              className="cp-social"
               style={{
                 position: "absolute",
                 bottom: "clamp(20px, 5.56vh, 60px)",
@@ -274,20 +424,22 @@ export default function ContactPage() {
 
           {/* ── Right column ──────────────────────────────────────────────── */}
           <div
+            className="cp-right"
             style={{
-              flex: "620 620 0",
+              flex: "652 652 0",
               position: "relative",
               minWidth: 0,
               height: "100%",
             }}
           >
-            {/* Subtitle — Figma y=294, nav=80 → top=214px */}
+            {/* Subtitle — Figma y=294, nav=80 → top=214px; x=828→8px from col left, w=519px */}
             <p
+              className="cp-subtitle"
               style={{
                 position: "absolute",
                 top: "clamp(100px, 19.81vh, 214px)",
                 left: 0,
-                right: 0,
+                width: "clamp(260px, 34.3vw, 519px)",
                 fontFamily: FONT,
                 fontWeight: 400,
                 fontSize: "clamp(14px, 1.85vh, 20px)",
@@ -300,18 +452,19 @@ export default function ContactPage() {
               Here&apos;s how you can reach us.
             </p>
 
-            {/* Form — Figma row-1 y=386, nav=80 → top=306px */}
+            {/* Form — Figma row-1 y=386, nav=80 → top=306px; content 580px wide */}
             <form
+              className="contact-form"
               style={{
                 position: "absolute",
                 top: "clamp(170px, 28.33vh, 306px)",
                 left: 0,
-                right: 0,
+                width: "clamp(300px, 38.36vw, 580px)",
               }}
-              className="contact-form"
             >
               {/* Row 1 — First name + Last name */}
               <div
+                className="cp-form-row"
                 style={{
                   display: "flex",
                   gap: "clamp(20px, 2.77vw, 40px)",
@@ -332,6 +485,7 @@ export default function ContactPage() {
 
               {/* Row 2 — Email + How did you hear */}
               <div
+                className="cp-form-row"
                 style={{
                   display: "flex",
                   gap: "clamp(20px, 2.77vw, 40px)",
