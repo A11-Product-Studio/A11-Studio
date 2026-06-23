@@ -61,9 +61,12 @@ function FormField({
     if (serverError) onValueChange?.(name);
   };
 
+  const errorId = `${name}-error`;
+
   return (
     <div className={`${className ?? ""} ${hasError ? "field-error" : ""}`.trim()}>
       <label
+        htmlFor={name}
         style={{
           display: "block",
           fontFamily: FONT,
@@ -81,23 +84,29 @@ function FormField({
 
       {multiline ? (
         <textarea
+          id={name}
           name={name}
           placeholder={placeholder}
           value={value}
           required={required}
           aria-required={required}
+          aria-invalid={hasError || undefined}
+          aria-describedby={hasError ? errorId : undefined}
           onChange={(e) => handleChange(e.target.value)}
           onBlur={() => setTouched(true)}
           style={{ ...baseStyle, resize: "none", height: 89, overflowY: "auto" }}
         />
       ) : (
         <input
+          id={name}
           type={type}
           name={name}
           placeholder={placeholder}
           value={value}
           required={required}
           aria-required={required}
+          aria-invalid={hasError || undefined}
+          aria-describedby={hasError ? errorId : undefined}
           onChange={(e) => handleChange(e.target.value)}
           onBlur={() => setTouched(true)}
           style={baseStyle}
@@ -106,6 +115,7 @@ function FormField({
 
       {/* Error message — client (blur on empty) or server (returned from action) */}
       <span
+        id={errorId}
         aria-live="polite"
         style={{
           display: "block",
