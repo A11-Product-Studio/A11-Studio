@@ -135,8 +135,15 @@ function BreadcrumbNav({ breadcrumb }: { breadcrumb: Crumb[] }) {
                 const label = (
                   <span style={{ color: "#ffffff", opacity: isLast ? 1 : 0.5 }}>{crumb.label}</span>
                 );
+                // Parent crumbs are hidden below md: the full trail ("Work / World /
+                // World Money") plus the right-aligned "Let's Talk" overran a 375px
+                // bar and overlapped. On phones we show only the current page; the
+                // logo still links home. Full trail returns at md+.
                 return (
-                  <span key={crumb.label} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span
+                    key={crumb.label}
+                    className={`${isLast ? "flex" : "hidden md:flex"} items-center gap-2`}
+                  >
                     {crumb.href && !isLast ? (
                       <Link href={crumb.href} style={{ textDecoration: "none", pointerEvents: "auto", padding: "13px 0" }}>
                         {label}
