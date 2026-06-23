@@ -183,7 +183,7 @@ const PROJECTS: Project[] = [
     description: "Real-world assets\nwith secure and\ntransparent\ntokenization",
     // Dark over the light cream backdrop of the new watch crop.
     textColor: "#282328",
-    href: "/tokenstudio",
+    href: "/freehold-invest",
     labelPx: 18,
     labelTracking: "-0.36px",
     labelTop: 70,
@@ -338,7 +338,9 @@ function ProjectCard({ project, priority, zoom }: { project: Project; priority?:
       >
         <span>{project.num}</span>
         <Chevron color={c} />
-        <span>{project.name}</span>
+        {/* Project name is the card's heading. font:inherit keeps the label row's
+            sizing/weight so promoting span→h2 changes the outline, not the look. */}
+        <h2 style={{ margin: 0, font: "inherit", letterSpacing: "inherit" }}>{project.name}</h2>
       </div>
 
       <p
@@ -554,7 +556,7 @@ const MOBILE_CARDS: MobileCardData[] = [
   { tile: nousTile,        name: "Nous",            description: "Shared intelligent\nlayer",                            color: "#ffffff", href: "/nous",        logo: nousLogo,                 logoHeight: 24 },
   { tile: freeholdTile,    name: "Freehold",        description: "Mobile wallet for\ninvestments and\nmanagement on\nthe move",        color: "#282328", href: "/freehold",    logo: freeholdLogoGrey, logoHeight: 18, logoFilter: "brightness(0.157)" },
   { tile: districtsTile,   name: "Districts",       description: "Virtual World\nmirroring real\nopportunities",                   color: "#3b3658", href: "/districts",   logo: districtsLogoMobile,      logoHeight: 20 },
-  { tile: tokenStudioTile, name: "Freehold Invest", description: "Real-world assets\nwith secure and\ntransparent\ntokenization", color: "#3f3d36", href: "/tokenstudio", logo: freeholdInvestLogoMobile, logoHeight: 18 },
+  { tile: tokenStudioTile, name: "Freehold Invest", description: "Real-world assets\nwith secure and\ntransparent\ntokenization", color: "#3f3d36", href: "/freehold-invest", logo: freeholdInvestLogoMobile, logoHeight: 18 },
   { tile: relaiTile,       name: "Relai",           description: "Bitcoin-only savings\napp focused on\nsimple self-custody", color: "#282328", href: "/relai",   logoHeight: 19 },
 ];
 
@@ -578,11 +580,14 @@ function MobileCard({ card, priority }: { card: MobileCardData; priority?: boole
 
           {/* Brand mark + description, overlaid at (32, 32) — matches Figma. */}
           <div style={{ position: "absolute", top: 32, left: 32, right: 24, display: "flex", flexDirection: "column", gap: 24 }}>
+            {/* Heading for the outline. The brand mark is a decorative logo (alt="")
+                or a visual-only wordmark, so the accessible title lives here. */}
+            <h2 className="sr-only">{card.name}</h2>
             <motion.div variants={itemVariants} style={{ height: card.logoHeight }}>
               {card.logo ? (
                 <Image src={card.logo} alt="" aria-hidden style={{ height: "100%", width: "auto", display: "block", filter: card.logoFilter }} />
               ) : (
-                <span style={{ fontFamily: MFONT, fontWeight: 500, fontSize: card.logoHeight, lineHeight: 1, letterSpacing: "-0.03em", color: card.color }}>
+                <span aria-hidden style={{ fontFamily: MFONT, fontWeight: 500, fontSize: card.logoHeight, lineHeight: 1, letterSpacing: "-0.03em", color: card.color }}>
                   {card.name}
                 </span>
               )}
@@ -635,7 +640,7 @@ function MobileHome() {
             maxWidth: 353, marginInline: "auto", textWrap: "balance",
           }}
         >
-          We are A11. Product Studio Built on Passion and Craft.
+          We are A11.<br />Product Studio Built on Passion and Craft.
         </h1>
       </section>
 

@@ -20,7 +20,7 @@ import s5c from "../../../public/assets/world-id/wid-5-3.jpg";
 const data: CaseStudyData = {
   breadcrumb: "World ID",
   section: { label: "World", href: "/world" },
-  title: "Are you real human?",
+  title: "Are you a real human?",
   description:
     "World ID is the identity layer for humans in the age of AI. The app needed to make a complex, unfamiliar concept feel simple, trustworthy, and immediately useful.",
   hero: { src: "/assets/world-id/Intro-reveal.2f62bf12.mp4", alt: "World ID", video: true, bg: "#F0EBE5" },

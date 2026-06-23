@@ -21,7 +21,10 @@ const T = {
   heroBase: {
     fontFamily: FONT,
     fontWeight: 500,
-    lineHeight: 0.9,
+    // 0.95, not 0.90: at 0.90 the descender of "thin​gs" overlapped the
+    // ascenders of "like" on the line below (~1px) on phones. 0.95 matches the
+    // site's other heroes and clears descender-over-ascender at every size.
+    lineHeight: 0.95,
     letterSpacing: "-0.05em",
     color: "#282328",
     whiteSpace: "pre-wrap" as const,

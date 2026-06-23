@@ -2,14 +2,9 @@
 
 import { useState, useEffect, useRef, useActionState } from "react";
 import { sendContactEmail, type ContactState } from "./actions";
+import { SOCIAL_LINKS } from "../socialLinks";
 
 const FONT = "var(--font-system), sans-serif";
-
-const SOCIALS = [
-  { label: "X(Twitter)", href: "#" },
-  { label: "LinkedIn", href: "#" },
-  { label: "Medium", href: "#" },
-];
 
 const initialState: ContactState = { status: "idle" };
 
@@ -66,9 +61,12 @@ function FormField({
     if (serverError) onValueChange?.(name);
   };
 
+  const errorId = `${name}-error`;
+
   return (
     <div className={`${className ?? ""} ${hasError ? "field-error" : ""}`.trim()}>
       <label
+        htmlFor={name}
         style={{
           display: "block",
           fontFamily: FONT,
@@ -86,19 +84,29 @@ function FormField({
 
       {multiline ? (
         <textarea
+          id={name}
           name={name}
           placeholder={placeholder}
           value={value}
+          required={required}
+          aria-required={required}
+          aria-invalid={hasError || undefined}
+          aria-describedby={hasError ? errorId : undefined}
           onChange={(e) => handleChange(e.target.value)}
           onBlur={() => setTouched(true)}
           style={{ ...baseStyle, resize: "none", height: 89, overflowY: "auto" }}
         />
       ) : (
         <input
+          id={name}
           type={type}
           name={name}
           placeholder={placeholder}
           value={value}
+          required={required}
+          aria-required={required}
+          aria-invalid={hasError || undefined}
+          aria-describedby={hasError ? errorId : undefined}
           onChange={(e) => handleChange(e.target.value)}
           onBlur={() => setTouched(true)}
           style={baseStyle}
@@ -107,6 +115,7 @@ function FormField({
 
       {/* Error message — client (blur on empty) or server (returned from action) */}
       <span
+        id={errorId}
         aria-live="polite"
         style={{
           display: "block",
@@ -313,7 +322,7 @@ export default function ContactForm() {
 
       {/* Social — mobile only, rendered after form */}
       <div className="flex md:hidden gap-6 mt-24">
-        {SOCIALS.map(({ label, href }) => (
+        {SOCIAL_LINKS.map(({ label, href }) => (
           <a
             key={label}
             href={href}
