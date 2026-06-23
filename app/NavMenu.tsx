@@ -8,8 +8,8 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 // ── Design tokens (from Figma "Navigation" frame 221:24055) ──────────────────────
 const FONT = "var(--font-system), sans-serif";
 
-const DARK = "#181818"; // logo, labels, active dot, CTA text
-const DARKBG = "#181818"; // mobile overlay background
+const DARK = "#282328"; // logo, labels, active dot, CTA text
+const DARKBG = "#282328"; // mobile overlay background
 
 // The "Let's Talk" (desktop) and "Contact" (mobile) CTAs route to the contact page.
 const CONTACT_HREF = "/contact";
@@ -17,7 +17,8 @@ const CONTACT_HREF = "/contact";
 const NAV_LINKS = [
   { label: "Work",       href: "/"       },
   { label: "Studio",     href: "/studio" },
-  { label: "Manifesto",  href: "/manifesto" },
+  // Manifesto hidden for now — re-add to restore the nav link.
+  // { label: "Manifesto",  href: "/manifesto" },
 ];
 
 const SOCIAL_LINKS = [
@@ -200,7 +201,7 @@ export default function NavMenu({ breadcrumb, theme }: { breadcrumb?: Crumb[]; t
       <header
         style={{
           position: "fixed", top: 0, left: 0, width: "100%", height: 80,
-          zIndex: 100, pointerEvents: "none",
+          zIndex: 100, mixBlendMode: "difference", pointerEvents: "none",
         }}
       >
         <div className="w-full px-4 md:px-8 lg:px-5 flex items-center h-full">
@@ -237,7 +238,7 @@ export default function NavMenu({ breadcrumb, theme }: { breadcrumb?: Crumb[]; t
                     padding: "11px 0",
                   }}
                 >
-                  {active && <ActiveDot />}
+                  {active && <ActiveDot color="#fff" />}
                   <span>{link.label}</span>
                 </Link>
               );
@@ -368,7 +369,7 @@ export default function NavMenu({ breadcrumb, theme }: { breadcrumb?: Crumb[]; t
               <div style={{ height: 1, background: "rgba(255,255,255,0.1)", marginBottom: 32 }} aria-hidden />
               <span
                 style={{
-                  display: "block", marginBottom: 16, color: "rgba(255,255,255,0.5)",
+                  display: "block", marginBottom: 16, color: "#989190",
                   fontWeight: 500, fontSize: 10, lineHeight: 1, letterSpacing: "0.5px",
                   textTransform: "uppercase",
                 }}

@@ -83,8 +83,8 @@ export type CaseStudyData = {
 // ─────────────────────────────────────────────────────────────────────────────
 const FONT = "var(--font-system), sans-serif";
 const INK = "#282328";
-const MUTED = "#989291";
-const VALUE = "#2C2C2C";
+const MUTED = "#989190";
+const VALUE = "#282328";
 const BEIGE = "#F0EBE5";
 const HAIRLINE = "rgba(40,35,40,0.12)";
 const RADIUS = "clamp(8px, 0.94vw, 13.5px)";
@@ -93,9 +93,9 @@ const CELL_GAP = "clamp(8px, 0.73vw, 11px)";
 const T = {
   // Figma design system (Studio of the Ambitious — Case Study World, 1243px content):
   //   hero title 72 / 0.95 · section h2 56 / 0.96 · body 22 / 1.3 · all -0.0Xem.
-  h1: { fontFamily: FONT, fontWeight: 500, fontSize: "clamp(44px, 5.8vw, 72px)", lineHeight: 0.95, letterSpacing: "-0.03em", color: INK },
-  h2: { fontFamily: FONT, fontWeight: 500, fontSize: "clamp(32px, 3.6vw, 44px)", lineHeight: 0.96, letterSpacing: "-0.02em", color: INK },
-  body: { fontFamily: FONT, fontWeight: 400, fontSize: "clamp(17px, 1.77vw, 22px)", lineHeight: 1.3, letterSpacing: "-0.02em", color: INK },
+  h1: { fontFamily: FONT, fontWeight: 500, fontSize: "clamp(44px, 5.8vw, 72px)", lineHeight: 0.95, letterSpacing: "-0.03em", color: INK, textWrap: "balance" as const },
+  h2: { fontFamily: FONT, fontWeight: 500, fontSize: "clamp(32px, 3.6vw, 44px)", lineHeight: 0.96, letterSpacing: "-0.02em", color: INK, textWrap: "balance" as const },
+  body: { fontFamily: FONT, fontWeight: 400, fontSize: "clamp(17px, 1.77vw, 22px)", lineHeight: 1.3, letterSpacing: "-0.02em", color: INK, textWrap: "pretty" as const },
   label: { fontFamily: FONT, fontWeight: 400, fontSize: "clamp(14px, 1.25vw, 16px)", lineHeight: 1.4, color: MUTED },
   value: { fontFamily: FONT, fontWeight: 400, fontSize: "clamp(17px, 1.77vw, 22px)", lineHeight: 1.4, color: VALUE },
 };
@@ -279,7 +279,9 @@ function Section({ section }: { section: CSSection }) {
             </TextReveal>
           )}
           {section.body && (
-            <TextReveal delay={80} style={{ maxWidth: "50%" }}>
+            // Cap the measure on big screens — 50% of a wide viewport runs to
+            // ~90ch, well past a comfortable read. ~46rem ≈ 60–66ch.
+            <TextReveal delay={80} style={{ maxWidth: "min(50%, 46rem)" }}>
               <p style={{ ...T.body, margin: 0 }}>{section.body}</p>
             </TextReveal>
           )}
@@ -287,10 +289,10 @@ function Section({ section }: { section: CSSection }) {
       )}
 
       {section.stats && section.stats.length > 0 && (
-        // Figma: stats row centered at ~1025px (not full-bleed); number→label gap 16px.
-        <div className="cs-stats" style={{ display: "grid", gridTemplateColumns: `repeat(${section.stats.length}, 1fr)`, width: "100%", maxWidth: 1025, margin: "0 auto" }}>
+        // Left-aligned stats row, capped at ~1025px; number→label gap 16px.
+        <div className="cs-stats" style={{ display: "grid", gridTemplateColumns: `repeat(${section.stats.length}, 1fr)`, width: "100%", maxWidth: 1025, margin: 0 }}>
           {section.stats.map((s, i) => (
-            <div key={s.label} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16, textAlign: "center", borderLeft: i > 0 ? `1px solid ${HAIRLINE}` : "none" }}>
+            <div key={s.label} style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 16, textAlign: "left", borderLeft: i > 0 ? `1px solid ${HAIRLINE}` : "none", paddingLeft: i > 0 ? 32 : 0 }}>
               <StatNumber value={s.value} delay={i * 120} />
               <span style={{ ...T.label, margin: 0 }}>{s.label}</span>
             </div>
@@ -526,7 +528,8 @@ export default function CaseStudy({ data }: { data: CaseStudyData }) {
   }, []);
 
   return (
-    <div className="bleed-root" style={{ backgroundColor: "#ffffff", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+    // Case studies inherit the shared --bleed (mouthwash gutter) via the <main> below.
+    <div className="bleed-root" style={{ backgroundColor: "#ffffff", minHeight: "100vh", display: "flex", flexDirection: "column" } as React.CSSProperties}>
       {/* Structured data: breadcrumb trail + the case study as a CreativeWork. */}
       {pathname && (
         <script
@@ -553,13 +556,13 @@ export default function CaseStudy({ data }: { data: CaseStudyData }) {
           transition: "opacity 0.9s cubic-bezier(0.22, 0.61, 0.36, 1), filter 0.9s cubic-bezier(0.22, 0.61, 0.36, 1)",
         }}
       >
-        <main className="w-full px-4 md:px-8 lg:px-5" style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        <main className="w-full px-4 md:px-8 lg:px-[var(--bleed)]" style={{ flex: 1, display: "flex", flexDirection: "column" }}>
 
           {/* ── Hero: title, then intro copy + meta stacked beneath (Figma layout) ─ */}
           <div style={{ paddingTop: "clamp(48px, 6vw, 80px)", display: "flex", flexDirection: "column", gap: "clamp(20px, 2vw, 24px)" }}>
             <h1 style={{ ...T.h1, margin: 0, whiteSpace: "pre-line", maxWidth: 930 }}>{data.title}</h1>
             {(data.description || (data.meta && data.meta.length > 0)) && (
-              <div className="cs-hero-aside" style={{ display: "flex", flexDirection: "column", gap: "clamp(28px, 3vw, 40px)", maxWidth: "50%" }}>
+              <div className="cs-hero-aside" style={{ display: "flex", flexDirection: "column", gap: "clamp(28px, 3vw, 40px)", maxWidth: "min(50%, 46rem)" }}>
                 {data.description && <p style={{ ...T.body, margin: 0 }}>{data.description}</p>}
                 {data.meta && data.meta.length > 0 && (
                   <dl style={{ margin: 0, display: "flex", flexDirection: "column", gap: "clamp(12px, 1.3vw, 16px)" }}>

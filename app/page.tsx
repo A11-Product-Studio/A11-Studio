@@ -29,11 +29,15 @@ import districtCase from "../public/assets/District-case.png";
 import tokenStudioCase from "../public/assets/Token studio-case.png";
 import atlansCase from "../public/assets/Atlans-case.png";
 import relaiCase from "../public/assets/Relai-case.png";
-import worldLogo from "../public/assets/world logo.png";
-import freeholdLogoGrey from "../public/assets/freehold logo grey.png";
-import districtLogo from "../public/assets/district logo.png";
-import freeholdLogo from "../public/assets/freehold logo.png";
-import atlansLogo from "../public/assets/atlans logo.png";
+import nousCase from "../public/assets/Nous-case.png";
+// Card wordmarks — vector (SVG) exports traced from the Figma work frame (1:89),
+// one per case-study section. freeholdLogo here is the Token Studio section's
+// mark (1:151), which in the design is the Freehold wordmark in brown.
+import worldLogo from "../public/assets/world-logo.svg";
+import freeholdLogoGrey from "../public/assets/freehold-logo.svg";
+import districtLogo from "../public/assets/districts-logo.svg";
+import freeholdLogo from "../public/assets/tokenstudio-logo.svg";
+import atlansLogo from "../public/assets/atlans-logo.svg";
 import PageEnter from "./PageEnter";
 import WordReveal from "./WordReveal";
 
@@ -57,11 +61,18 @@ type Project = {
   href?: string;
   labelPx: number;
   labelTracking: string;
+  /** Label top in design px (relative to CARD_DESIGN_W). Scaled down from the
+   *  original values by each card's height-change ratio when the crops moved to
+   *  the uniform 1.704 aspect — keeps the copy at the same fractional vertical
+   *  spot on the now-shorter card. */
   labelTop: number;
   descTop: number;
   logo?: StaticImageData;
   logoHeight: number;
   logoLeft: number;
+  /** Logo distance from the card's bottom edge in design px (default 64),
+   *  likewise scaled for the uniform crop. */
+  logoBottom?: number;
 };
 
 const PROJECTS: Project[] = [
@@ -70,60 +81,67 @@ const PROJECTS: Project[] = [
     image: worldCase,
     name: "World",
     description: "Five years,\nnine people.\nFour Apps for\nreal humans",
-    textColor: "#282828",
+    // White reads against the new dark-green-couch fill (near-black failed: ~1.0:1 → 7:1).
+    textColor: "#ffffff",
     href: "/world",
     labelPx: 16,
     labelTracking: "-0.32px",
-    labelTop: 56,
-    descTop: 112,
+    labelTop: 53,
+    descTop: 106,
     logo: worldLogo,
     logoHeight: 31,
     logoLeft: 72,
+    logoBottom: 61,
   },
   {
     num: "02",
     image: freeholdCase,
     name: "Freehold",
     description: "A non-custodial,\nmulti-chain DeFi\nwallet app",
-    textColor: "#303030",
+    textColor: "#282328",
     href: "/freehold",
     labelPx: 18,
     labelTracking: "-0.36px",
-    labelTop: 62,
-    descTop: 124,
+    labelTop: 54,
+    descTop: 108,
     logo: freeholdLogoGrey,
     logoHeight: 31,
     logoLeft: 174,
+    logoBottom: 56,
   },
   {
     num: "03",
     image: districtCase,
     name: "Districts",
     description: "RWA tokenization,\nstart to finish",
-    textColor: "#45474a",
+    // Near-black over the light lavander blur reads stronger than the mid-gray (4.3→7.1:1).
+    textColor: "#282328",
     href: "/districts",
     labelPx: 18,
     labelTracking: "-0.36px",
-    labelTop: 147,
-    descTop: 209,
+    labelTop: 139,
+    descTop: 198,
     logo: districtLogo,
     logoHeight: 31,
     logoLeft: 72,
+    logoBottom: 61,
   },
   {
     num: "04",
     image: tokenStudioCase,
     name: "Token Studio",
     description: "Tokenize, launch,\nmanage. On-chain\nRWAs",
-    textColor: "#4d2820",
+    // White over the dark wood paneling — brown was unreadable (1.9→10:1 on the copy).
+    textColor: "#ffffff",
     href: "/tokenstudio",
     labelPx: 18,
     labelTracking: "-0.36px",
-    labelTop: 80,
-    descTop: 142,
+    labelTop: 70,
+    descTop: 124,
     logo: freeholdLogo,
     logoHeight: 31,
     logoLeft: 80,
+    logoBottom: 56,
   },
   {
     num: "05",
@@ -134,23 +152,40 @@ const PROJECTS: Project[] = [
     href: "/atlans",
     labelPx: 18,
     labelTracking: "-0.36px",
-    labelTop: 123,
-    descTop: 186,
+    labelTop: 107,
+    descTop: 163,
     logo: atlansLogo,
     logoHeight: 31,
     logoLeft: 80,
+    logoBottom: 56,
   },
   {
     num: "06",
     image: relaiCase,
     name: "Relai",
     description: "Bitcoin-only savings\napp focused on\nsimple self-custody.",
-    textColor: "#282828",
+    textColor: "#282328",
     href: "/relai",
     labelPx: 18,
     labelTracking: "-0.36px",
-    labelTop: 80,
-    descTop: 142,
+    labelTop: 69,
+    descTop: 122,
+    logoHeight: 31,
+    logoLeft: 80,
+  },
+  {
+    num: "07",
+    image: nousCase,
+    name: "Nous",
+    description: "One Personal AI\nfor your whole life",
+    // White over the warm red/orange gradient (5.5:1; near-black was 2.9).
+    textColor: "#ffffff",
+    href: "/nous",
+    // No Nous wordmark in the design → no overlay logo (like Relai).
+    labelPx: 18,
+    labelTracking: "-0.36px",
+    labelTop: 58,
+    descTop: 116,
     logoHeight: 31,
     logoLeft: 80,
   },
@@ -207,9 +242,17 @@ function cqMid(px: number): string {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function Chevron({ color }: { color: string }) {
+  // Inline so the slash stroke inherits the card's label color (the static
+  // slash.svg was fixed dark — invisible on the white-text cards).
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src="/assets/slash.svg" alt="" aria-hidden style={{ height: cqMid(18), width: "auto", flexShrink: 0 }} />
+    <svg
+      viewBox="0 0 12 19"
+      fill="none"
+      aria-hidden
+      style={{ height: cqMid(18), width: "auto", flexShrink: 0 }}
+    >
+      <path d="M0.72168 18.1915L10.984 0.416992" stroke={color} strokeWidth="1.66636" />
+    </svg>
   );
 }
 
@@ -225,7 +268,11 @@ function ProjectCard({ project, priority, zoom }: { project: Project; priority?:
       className="relative w-full overflow-hidden rounded-[4.444px]"
       variants={surfaceVariants}
       style={{
-        aspectRatio: "1240 / 769",
+        // Shape matches the source frame exactly (intrinsic dims of the Figma
+        // export) — every card now shares the uniform 1.704 crop, so the cove
+        // silhouette baked into the PNG alpha rounds the corners (no CSS clip).
+        // Overlay values below are %-of-width (cqw).
+        aspectRatio: `${project.image.width} / ${project.image.height}`,
         // Container for the cqw-based overlays below — the label / description /
         // logo scale with the card so they stay locked to the image shape.
         containerType: "inline-size",
@@ -299,7 +346,7 @@ function ProjectCard({ project, priority, zoom }: { project: Project; priority?:
         <div
           style={{
             position: "absolute",
-            bottom: cq(64),
+            bottom: cq(project.logoBottom ?? 64),
             left: cq(project.logoLeft),
             height: cqMid(project.logoHeight),
           }}
@@ -360,6 +407,7 @@ function CTASection({
             color: "#282328",
             width: "714.315px",
             maxWidth: "100%",
+            textWrap: "balance",
           }}
         >
           {text}
@@ -428,6 +476,7 @@ function HeroReveal() {
             letterSpacing: "-0.02em",
             color: "#282328",
             maxWidth: "90vw",
+            textWrap: "balance",
           }}
         >
           {"We are A11.\nProduct Studio Built on\nPassion and Craft."}
@@ -472,12 +521,12 @@ type MobileCardData = {
 };
 
 const MOBILE_CARDS: MobileCardData[] = [
-  { tile: worldTile,       name: "World",        description: "Five years,\nnine people.\nFour Apps for\nreal humans", color: "#282828", href: "/world",       logo: worldLogo,        logoHeight: 20 },
-  { tile: freeholdTile,    name: "Freehold",     description: "A non-custodial,\nmulti-chain DeFi\nwallet app",        color: "#282828", href: "/freehold",    logo: freeholdLogoGrey, logoHeight: 18 },
+  { tile: worldTile,       name: "World",        description: "Five years,\nnine people.\nFour Apps for\nreal humans", color: "#282328", href: "/world",       logo: worldLogo,        logoHeight: 20 },
+  { tile: freeholdTile,    name: "Freehold",     description: "A non-custodial,\nmulti-chain DeFi\nwallet app",        color: "#282328", href: "/freehold",    logo: freeholdLogoGrey, logoHeight: 18 },
   { tile: districtsTile,   name: "Districts",    description: "RWA tokenization,\nstart to finish",                   color: "#45474a", href: "/districts",   logo: districtLogo,     logoHeight: 20 },
   { tile: tokenStudioTile, name: "Token Studio", description: "Tokenize, launch,\nmanage. On-chain\nRWAs",            color: "#4d2820", href: "/tokenstudio", logo: freeholdLogo,     logoHeight: 18 },
   { tile: atlansTile,      name: "Atlans",       description: "Athletic platform\nof Discovery and\nconnection",       color: "#ffffff", href: "/atlans",      logo: atlansLogo,       logoHeight: 16 },
-  { tile: relaiTile,       name: "Relai",        description: "Bitcoin-only savings\napp focused on\nsimple self-custody.", color: "#282828", href: "/relai",   logoHeight: 19 },
+  { tile: relaiTile,       name: "Relai",        description: "Bitcoin-only savings\napp focused on\nsimple self-custody.", color: "#282328", href: "/relai",   logoHeight: 19 },
 ];
 
 function MobileCard({ card, priority }: { card: MobileCardData; priority?: boolean }) {
@@ -595,7 +644,7 @@ function MobileHome() {
           style={{
             fontFamily: MFONT, fontWeight: 500, fontSize: 44, lineHeight: 0.9,
             letterSpacing: "-0.05em", color: "#282328", opacity: 0.95,
-            maxWidth: 353, marginInline: "auto",
+            maxWidth: 353, marginInline: "auto", textWrap: "balance",
           }}
         >
           We are A11. Product Studio Built on Passion and Craft.
@@ -632,19 +681,24 @@ function MobileHome() {
 }
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
+// The cove silhouette (rounded corners + squircle smoothing) is baked into each
+// card PNG's alpha channel by the Figma export, so no CSS clip-path is needed —
+// the transparent corners reveal the page background directly.
+
 export default function WorkPage() {
   return (
     <div style={{ position: "relative", background: "#fff" }} className="min-h-screen">
       <NavMenu />
 
       {/* ── Desktop / tablet (≥ md): pinned-hero reveal + work grid ── */}
+      {/* Work grid + footer below inherit the shared --bleed (mouthwash gutter). */}
       <div className="hidden md:block">
         {/* Pinned hero — the work grid below slides up over it on first scroll */}
         <HeroReveal />
 
         {/* Work grid — opaque layer that reveals over the hero (z-1) */}
         <PageEnter style={{ position: "relative", zIndex: 1, background: "#fff" }}>
-          <main className="w-full md:px-8 lg:px-5 flex flex-col gap-[10px] pt-[10px]">
+          <main className="w-full md:px-8 lg:px-[var(--bleed)] flex flex-col gap-[10px] pt-[10px]">
             {/* Featured: ZoomScale IS the entrance — no Reveal wrapper (would compete) */}
             <ProjectCard project={PROJECTS[0]} priority zoom />
             <Reveal delay={0.1}><ProjectCard project={PROJECTS[1]} /></Reveal>
@@ -667,9 +721,10 @@ export default function WorkPage() {
 
             <Reveal><ProjectCard project={PROJECTS[4]} /></Reveal>
             <Reveal delay={0.1}><ProjectCard project={PROJECTS[5]} /></Reveal>
+            <Reveal><ProjectCard project={PROJECTS[6]} /></Reveal>
           </main>
 
-          <div className="max-w-[1240px] mx-auto md:px-8 mt-[10px] pb-[10px] lg:max-w-none lg:px-5">
+          <div className="max-w-[1240px] mx-auto md:px-8 mt-[10px] pb-[10px] lg:max-w-none lg:px-[var(--bleed)]">
             <FooterBanner />
           </div>
         </PageEnter>
