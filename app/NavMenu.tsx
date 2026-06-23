@@ -158,8 +158,14 @@ function BreadcrumbNav({ breadcrumb }: { breadcrumb: Crumb[] }) {
             </div>
           </nav>
 
+          {/* Keep the flex:1 spacer so the crumb stays centered, but hide the CTA
+              itself below md: a centered single crumb + right-aligned "Let's Talk"
+              abut with no gap on a 375px bar. Contact is still one tap away via the
+              "Let's talk" footer banner every case page ends with. */}
           <div style={{ flex: "1 1 0", minWidth: 0, display: "flex", justifyContent: "flex-end" }}>
-            <ContactCta color="#fff" />
+            <span className="hidden md:block">
+              <ContactCta color="#fff" />
+            </span>
           </div>
         </div>
       </header>
