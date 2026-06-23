@@ -10,5 +10,4 @@ export const SOCIAL_LINKS: SocialLink[] = [
   { label: "X (Twitter)", href: "#" },
   { label: "LinkedIn",    href: "#" },
   { label: "Cosmos",      href: "#" },
-  { label: "Medium",      href: "#" },
 ];
