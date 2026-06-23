@@ -2,7 +2,6 @@ import CaseStudy, { type CaseStudyData } from "../../CaseStudy";
 import { buildCaseMetadata } from "../../seo";
 import { ALL_PROJECTS } from "../../caseProjects";
 
-import hero from "../../../public/assets/world-id/wid-hero.jpg";
 import ajayAvatar from "../../../public/assets/world-id/Ajay.jpg";
 import s2b from "../../../public/assets/world-id/wid-2-2.jpg";
 import s3a from "../../../public/assets/world-id/wid-3-1.jpg";
@@ -24,7 +23,7 @@ const data: CaseStudyData = {
   title: "Are you real human?",
   description:
     "World ID is the identity layer for humans in the age of AI. The app needed to make a complex, unfamiliar concept feel simple, trustworthy, and immediately useful.",
-  hero: { src: hero, alt: "World ID", bg: "#F0EBE5" },
+  hero: { src: "/assets/world-id/Intro-reveal.2f62bf12.mp4", alt: "World ID", video: true, bg: "#F0EBE5" },
   sections: [
     {
       title: "You know you're human.\nDoes the internet?",
