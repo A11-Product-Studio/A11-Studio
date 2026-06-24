@@ -47,26 +47,26 @@ export const metadata: Metadata = {
   // Production origin — makes OpenGraph/Twitter image and canonical URLs resolve absolutely.
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "A11 Product Studio · Work",
-    template: "%s · A11 Product Studio",
+    default: "A11 Studio · Work",
+    template: "%s · A11 Studio",
   },
-  description: "A11 Product Studio of the Ambitious.",
-  applicationName: "A11 Product Studio",
+  description: "A11 Studio of the Ambitious.",
+  applicationName: "A11 Studio",
   // Home canonical. Case studies and section pages override this with their own.
   alternates: { canonical: "/" },
-  authors: [{ name: "A11 Product Studio" }],
+  authors: [{ name: "A11 Studio" }],
   keywords: ["A11", "product studio", "product design", "design studio"],
   openGraph: {
     type: "website",
-    siteName: "A11 Product Studio",
-    title: "A11 Product Studio · Work",
-    description: "A11 Product Studio of the Ambitious.",
+    siteName: "A11 Studio",
+    title: "A11 Studio · Work",
+    description: "A11 Studio of the Ambitious.",
     // Image is supplied automatically by app/opengraph-image.tsx.
   },
   twitter: {
     card: "summary_large_image",
-    title: "A11 Product Studio · Work",
-    description: "A11 Product Studio of the Ambitious.",
+    title: "A11 Studio · Work",
+    description: "A11 Studio of the Ambitious.",
   },
 };
 

@@ -12,14 +12,14 @@ export const metadata: Metadata = {
   alternates: { canonical: "/world" },
   openGraph: {
     type: "article",
-    title: "World · A11 Product Studio",
+    title: "World · A11 Studio",
     description:
       "Five years, nine people, four apps, and the number one crypto wallet. A11's work with Tools for Humanity.",
     url: "/world",
   },
   twitter: {
     card: "summary_large_image",
-    title: "World · A11 Product Studio",
+    title: "World · A11 Studio",
     description: "Five years, nine people, four apps, and the number one crypto wallet.",
   },
 };
