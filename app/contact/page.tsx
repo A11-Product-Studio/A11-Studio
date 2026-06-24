@@ -7,18 +7,18 @@ import { SOCIAL_LINKS } from "../socialLinks";
 
 export const metadata: Metadata = {
   title: "Let's Talk",
-  description: "Got an idea we can help with? Want to join our team? Reach out to A11 Product Studio.",
+  description: "Got an idea we can help with? Want to join our team? Reach out to A11 Studio.",
   alternates: { canonical: "/contact" },
   openGraph: {
     type: "website",
-    title: "Let's Talk · A11 Product Studio",
-    description: "Got an idea we can help with? Want to join our team? Reach out to A11 Product Studio.",
+    title: "Let's Talk · A11 Studio",
+    description: "Got an idea we can help with? Want to join our team? Reach out to A11 Studio.",
     url: "/contact",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Let's Talk · A11 Product Studio",
-    description: "Got an idea we can help with? Want to join our team? Reach out to A11 Product Studio.",
+    title: "Let's Talk · A11 Studio",
+    description: "Got an idea we can help with? Want to join our team? Reach out to A11 Studio.",
   },
 };
 

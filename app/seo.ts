@@ -14,8 +14,8 @@ export const CALENDLY_URL = "https://calendly.com/a11studio";
 // Used by the Organization JSON-LD, llms.txt, and llms-full.txt so the studio's
 // self-description never drifts between the human site and the agent surfaces.
 // Verified facts only: founded 2019, nine people. Update here, everything follows.
-export const STUDIO_NAME = "A11 Product Studio";
-export const STUDIO_TAGLINE = "A11 Product Studio of the Ambitious.";
+export const STUDIO_NAME = "A11 Studio";
+export const STUDIO_TAGLINE = "A11 Studio of the Ambitious.";
 export const STUDIO_FOUNDED = "2019";
 export const STUDIO_HEADCOUNT = 9;
 export const STUDIO_DOMAINS = ["crypto", "identity", "fintech", "real-world assets"];
@@ -54,14 +54,14 @@ export const flattenTitle = (s: string) => s.replace(/\s*\n\s*/g, " ").trim();
 
 // Derives per-page Metadata from a case study's existing `data` object so titles
 // and descriptions never drift from on-page content. The page title runs through
-// the root template ("%s — A11 Product Studio"); OG/Twitter get the full string.
+// the root template ("%s — A11 Studio"); OG/Twitter get the full string.
 // The per-segment opengraph-image.tsx supplies the share image automatically.
 export function buildCaseMetadata(data: CaseStudyData, path: string): Metadata {
   const name = data.breadcrumb;
-  const fullTitle = `${name} · A11 Product Studio`;
+  const fullTitle = `${name} · A11 Studio`;
   const description =
     data.description ??
-    `${flattenTitle(data.title)}. A case study by A11 Product Studio.`;
+    `${flattenTitle(data.title)}. A case study by A11 Studio.`;
 
   return {
     title: name,
@@ -83,7 +83,7 @@ export function buildCaseMetadata(data: CaseStudyData, path: string): Metadata {
 
 const ORGANIZATION_REF = {
   "@type": "Organization",
-  name: "A11 Product Studio",
+  name: "A11 Studio",
   url: SITE_URL,
 };
 
@@ -97,7 +97,7 @@ export function caseStudyJsonLd(data: CaseStudyData, path: string) {
   const name = data.breadcrumb;
   const description =
     data.description ??
-    `${flattenTitle(data.title)}. A case study by A11 Product Studio.`;
+    `${flattenTitle(data.title)}. A case study by A11 Studio.`;
 
   const crumbs = [
     { name: "Work", item: `${SITE_URL}/` },

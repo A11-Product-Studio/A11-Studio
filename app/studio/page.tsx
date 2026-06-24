@@ -61,14 +61,14 @@ export const metadata: Metadata = {
   alternates: { canonical: "/studio" },
   openGraph: {
     type: "profile",
-    title: "Studio · A11 Product Studio",
+    title: "Studio · A11 Studio",
     description:
       "A11 is a product design studio of nine people, designing digital products together since 2019.",
     url: "/studio",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Studio · A11 Product Studio",
+    title: "Studio · A11 Studio",
     description: "Nine people designing digital products together since 2019.",
   },
 };

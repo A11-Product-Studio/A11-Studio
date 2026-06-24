@@ -63,14 +63,14 @@ export const metadata: Metadata = {
   alternates: { canonical: "/manifesto" },
   openGraph: {
     type: "article",
-    title: "Manifesto · A11 Product Studio",
+    title: "Manifesto · A11 Studio",
     description:
       "The beliefs and principles behind how A11 designs products for the ambitious.",
     url: "/manifesto",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Manifesto · A11 Product Studio",
+    title: "Manifesto · A11 Studio",
     description: "The beliefs and principles behind how A11 designs products for the ambitious.",
   },
 };
