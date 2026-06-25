@@ -20,6 +20,14 @@ const nextConfig: NextConfig = {
         destination: "/freehold-invest",
         permanent: true,
       },
+      // World Money was rebranded to "World App" and its route renamed
+      // /world/money → /world/app. Permanently (308) redirect the old path so
+      // any indexed or shared links keep resolving.
+      {
+        source: "/world/money",
+        destination: "/world/app",
+        permanent: true,
+      },
     ];
   },
 
