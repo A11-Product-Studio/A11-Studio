@@ -36,7 +36,7 @@ type CaseCard = {
 };
 
 const CARDS: CaseCard[] = [
-  { img: worldMoneyCard, icon: "/assets/world/case/world-money-icon.svg", iconScale: 0.5625, title: "World Money", sub: "Manage your investments",            href: "/world/money" },
+  { img: worldMoneyCard, icon: "/assets/world/case/world-money-icon.svg", iconScale: 0.5625, title: "World App", sub: "Manage your investments",            href: "/world/app" },
   { img: worldIdCard,    icon: "/assets/world/case/world-id-icon.svg",    iconScale: 0.5625, title: "World ID",    sub: "Prove you’re a real human",          href: "/world/id"    },
   { img: worldChatCard,  icon: "/assets/world/case/world-chat-icon.svg",  iconScale: 0.5625, title: "World Chat",  sub: "Chat for real humans in World Network", href: "/world/chat"  },
   { img: worldOrbCard,   icon: "/assets/world/case/world-orb-icon.svg",   iconScale: 0.6667, title: "Orb App",     sub: "Manage your Orb operations",         href: "/world/orb"   },

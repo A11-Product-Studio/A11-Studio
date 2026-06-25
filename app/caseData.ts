@@ -3,7 +3,7 @@ import { ALL_PROJECTS } from "./caseProjects";
 
 // Each case study's full content object, imported from its page module (every
 // case page exports `data`). Keyed by route so we can join it to ALL_PROJECTS.
-import { data as worldMoney } from "./world/money/page";
+import { data as worldApp } from "./world/app/page";
 import { data as worldId } from "./world/id/page";
 import { data as worldChat } from "./world/chat/page";
 import { data as orb } from "./world/orb/page";
@@ -15,7 +15,7 @@ import { data as districts } from "./districts/page";
 import { data as nous } from "./nous/page";
 
 const DATA_BY_HREF: Record<string, CaseStudyData> = {
-  "/world/money": worldMoney,
+  "/world/app": worldApp,
   "/world/id": worldId,
   "/world/chat": worldChat,
   "/world/orb": orb,
