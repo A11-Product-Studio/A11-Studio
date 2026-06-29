@@ -1,19 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import NavMenu from "../NavMenu";
 import FooterBanner from "../FooterBanner";
 import PageEnter from "../PageEnter";
-import CoverImage from "../CoverImage";
+import PhotoCarousel from "../PhotoCarousel";
 import CtaButton from "../CtaButton";
-
-// Studio collage — six scattered photos (exported from the "Studio of the
-// Ambitious" Figma frame). Square-cornered (radius 0) to match the design.
-import collage1 from "../../public/assets/studio-collage-1.jpg"; // barista / coffee bar
-import collage2 from "../../public/assets/studio-collage-2.jpg"; // laptop in café
-import collage3 from "../../public/assets/studio-collage-3.jpg"; // "Where Creators Meet Coffee"
-import collage4 from "../../public/assets/studio-collage-4.jpg"; // holding the orb
-import collage5 from "../../public/assets/studio-collage-5.jpg"; // team around the table
-import collage6 from "../../public/assets/studio-collage-6.jpg"; // talk / presentation
 
 const FONT = "var(--font-system), sans-serif";
 
@@ -119,62 +109,13 @@ export default function StudioPage() {
           </div>
         </div>{/* /hero content container */}
 
-        {/* ── Image collage (full-bleed) ────────────────────────────────── */}
-        {/* Pulled out of the page content gutters so it spans the viewport
-            width — matching the design's near edge-to-edge collage. A 16px
-            hairline inset keeps photos off the very edge on every device. */}
-        <div className="w-full px-4">
-
-          {/* ── (images) ──────────────────────────────────────────────────── */}
-          {/* Six scattered photos. Each exported frame already carries the
-              design's crop, so its box's aspect-ratio matches the source —
-              CoverImage `cover` won't crop further. */}
-
-          {/* Mobile (<sm): single column. Tablet (sm–lg): two-column masonry.
-              Both full-width with intrinsic aspect ratio. Ordered top-to-bottom
-              by the photos' vertical position in the design. */}
-          <div className="lg:hidden mb-16 md:mb-24 [column-fill:balance] columns-1 sm:columns-2 gap-4">
-            {[
-              { src: collage2, alt: "Working on a laptop in a café" },
-              { src: collage3, alt: "“Where Creators Meet Coffee” signage" },
-              { src: collage1, alt: "At the coffee bar" },
-              { src: collage4, alt: "Holding the orb" },
-              { src: collage5, alt: "The team working around a table" },
-              { src: collage6, alt: "Speaking at a talk" },
-            ].map((img, i) => (
-              <Image
-                key={i}
-                src={img.src}
-                alt={img.alt}
-                sizes="(max-width: 639px) 100vw, 50vw"
-                className="w-full h-auto block mb-4 break-inside-avoid"
-              />
-            ))}
-          </div>
-
-          {/* Desktop (lg+): scattered collage. Positions are % of the collage's
-              bounding box (1492×876 in the 1512-wide Figma frame). */}
-          <div className="hidden lg:block relative mb-[120px]" style={{ aspectRatio: "1492 / 876" }}>
-            <div style={{ position: "absolute", left: "0%", top: "8.01%", width: "26.81%", height: "54.78%", overflow: "hidden" }}>
-              <CoverImage src={collage1} alt="At the coffee bar" sizes="28vw" />
-            </div>
-            <div style={{ position: "absolute", left: "81.77%", top: "0%", width: "18.23%", height: "37.66%", overflow: "hidden" }}>
-              <CoverImage src={collage2} alt="Working on a laptop in a café" sizes="19vw" />
-            </div>
-            <div style={{ position: "absolute", left: "54.62%", top: "7.66%", width: "20.57%", height: "26.58%", overflow: "hidden" }}>
-              <CoverImage src={collage3} alt="“Where Creators Meet Coffee” signage" sizes="21vw" />
-            </div>
-            <div style={{ position: "absolute", left: "31.43%", top: "32.08%", width: "18.23%", height: "37.66%", overflow: "hidden" }}>
-              <CoverImage src={collage4} alt="Holding the orb" sizes="19vw" />
-            </div>
-            <div style={{ position: "absolute", left: "58.41%", top: "45.22%", width: "26.81%", height: "54.78%", overflow: "hidden" }}>
-              <CoverImage src={collage5} alt="The team working around a table" sizes="28vw" />
-            </div>
-            <div style={{ position: "absolute", left: "12.61%", top: "72.71%", width: "14.21%", height: "18.25%", overflow: "hidden" }}>
-              <CoverImage src={collage6} alt="Speaking at a talk" sizes="15vw" />
-            </div>
-          </div>
-        </div>{/* /full-bleed collage */}
+        {/* ── Photo carousel (full-bleed) ───────────────────────────────── */}
+        {/* Two rows of portrait photos auto-scrolling in opposite directions at
+            different speeds. Replaces the earlier static collage; spans the
+            viewport width (.bleed-root on the page clips overflow). */}
+        <div className="mb-16 md:mb-24 lg:mb-[120px]">
+          <PhotoCarousel />
+        </div>
 
         {/* ── Footer ────────────────────────────────────────────────────── */}
         <div className="w-full px-4 md:px-8 lg:px-[var(--bleed)]">
