@@ -36,17 +36,6 @@ export const data: CaseStudyData = {
     "Orb App evolved alongside the World network, supporting operators, devices, and verification workflows across rapidly expanding global operations.",
   hero: { src: heroImg, alt: "Orb App, designing clarity at global scale", bg: "#F0EBE5" },
   sections: [
-    // Images from the former "Simplicity across every workflow" section — copy
-    // removed per the copy deck; media kept as a headless block.
-    {
-      media: [
-        { kind: "full", aspect: "1116 / 750", image: { src: s1a, alt: "Orb App workflow overview", bg: "#F0EBE5" } },
-        { kind: "duo", aspect: "553 / 550", images: [
-          { src: s1b, alt: "Orb App workflow detail", bg: "#F0EBE5" },
-          { src: s1c, alt: "Orb App verification dashboard", bg: "#F0EBE5" },
-        ] },
-      ],
-    },
     // Left-aligned testimonial (y3826)
     {
       quote: {
@@ -62,6 +51,13 @@ export const data: CaseStudyData = {
       title: "Intuitive interfaces\nfor complex hardware",
       body: "Orb App was designed to make complex hardware easy to operate, simplifying setup, connectivity, and device management through clear and intuitive interactions.",
       media: [
+        // Images from the former "Simplicity across every workflow" section —
+        // copy removed per the deck; media merged here so it keeps the tile gap.
+        { kind: "full", aspect: "1116 / 750", image: { src: s1a, alt: "Orb App workflow overview", bg: "#F0EBE5" } },
+        { kind: "duo", aspect: "553 / 550", images: [
+          { src: s1b, alt: "Orb App workflow detail", bg: "#F0EBE5" },
+          { src: s1c, alt: "Orb App verification dashboard", bg: "#F0EBE5" },
+        ] },
         { kind: "full", aspect: "1116 / 750", image: { src: s2a, alt: "Orb App device setup", bg: "#F0EBE5" } },
         { kind: "duo", aspect: "553 / 550", images: [
           { src: s2b, alt: "Orb App connectivity", bg: "#F0EBE5" },
