@@ -4,12 +4,23 @@ import { ALL_PROJECTS } from "../../caseProjects";
 
 import heroImg from "../../../public/assets/orb/orb-hero.jpg";
 import subhoAvatar from "../../../public/assets/orb/Subho.png";
+import s1a from "../../../public/assets/orb/orb-1-1.jpg";
+import s1b from "../../../public/assets/orb/orb-1-2.jpg";
+import s1c from "../../../public/assets/orb/orb-1-3.jpg";
 import s2a from "../../../public/assets/orb/orb-2-1.jpg";
 import s2b from "../../../public/assets/orb/orb-2-2.jpg";
 import s2c from "../../../public/assets/orb/orb-2-3.jpg";
 import s2d from "../../../public/assets/orb/orb-2-4.jpg";
 import s2e from "../../../public/assets/orb/orb-2-5.jpg";
 import s2f from "../../../public/assets/orb/orb-2-6.jpg";
+import s3a from "../../../public/assets/orb/orb-3-1.jpg";
+import s3b from "../../../public/assets/orb/orb-3-2.jpg";
+import s3c from "../../../public/assets/orb/orb-3-3.jpg";
+import s3d from "../../../public/assets/orb/orb-3-4.jpg";
+import s4a from "../../../public/assets/orb/orb-4-1.jpg";
+import s4b from "../../../public/assets/orb/orb-4-2.jpg";
+import s4c from "../../../public/assets/orb/orb-4-3.jpg";
+import s4d from "../../../public/assets/orb/orb-4-4.jpg";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Orb App — World products case study (Figma frame "Orb App" 1871:12815)
@@ -25,6 +36,17 @@ export const data: CaseStudyData = {
     "Orb App evolved alongside the World network, supporting operators, devices, and verification workflows across rapidly expanding global operations.",
   hero: { src: heroImg, alt: "Orb App, designing clarity at global scale", bg: "#F0EBE5" },
   sections: [
+    // Images from the former "Simplicity across every workflow" section — copy
+    // removed per the copy deck; media kept as a headless block.
+    {
+      media: [
+        { kind: "full", aspect: "1116 / 750", image: { src: s1a, alt: "Orb App workflow overview", bg: "#F0EBE5" } },
+        { kind: "duo", aspect: "553 / 550", images: [
+          { src: s1b, alt: "Orb App workflow detail", bg: "#F0EBE5" },
+          { src: s1c, alt: "Orb App verification dashboard", bg: "#F0EBE5" },
+        ] },
+      ],
+    },
     // Left-aligned testimonial (y3826)
     {
       quote: {
@@ -50,6 +72,30 @@ export const data: CaseStudyData = {
           { src: s2e, alt: "Orb App setup confirmation", bg: "#F0EBE5" },
         ] },
         { kind: "full", aspect: "1116 / 750", image: { src: s2f, alt: "Orb App hardware overview", bg: "#F0EBE5" } },
+      ],
+    },
+    // Images from the former "Visibility across global deployments" section —
+    // copy removed per the copy deck; media kept as a headless block.
+    {
+      media: [
+        { kind: "full", aspect: "1116 / 750", image: { src: s3a, alt: "Orb App deployment overview", bg: "#F0EBE5" } },
+        { kind: "duo", aspect: "553 / 550", images: [
+          { src: s3b, alt: "Orb App field activity", bg: "#F0EBE5" },
+          { src: s3c, alt: "Orb App scheduling calendar", bg: "#F0EBE5" },
+        ] },
+        { kind: "full", aspect: "1116 / 750", image: { src: s3d, alt: "Orb App operational clarity", bg: "#F0EBE5" } },
+      ],
+    },
+    // Images from the former "Built for large scale operations" section — copy
+    // removed per the copy deck; media kept as a headless block.
+    {
+      media: [
+        { kind: "full", aspect: "1116 / 750", image: { src: s4a, alt: "Orb App large-scale operations", bg: "#F0EBE5" } },
+        { kind: "duo", aspect: "553 / 550", images: [
+          { src: s4b, alt: "Orb App operational models", bg: "#F0EBE5" },
+          { src: s4c, alt: "Orb App community operations", bg: "#F0EBE5" },
+        ] },
+        { kind: "full", aspect: "1116 / 750", image: { src: s4d, alt: "Orb App global deployment view", bg: "#F0EBE5" } },
       ],
     },
   ],
