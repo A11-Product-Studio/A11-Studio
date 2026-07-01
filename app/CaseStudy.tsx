@@ -307,7 +307,7 @@ function Section({ section }: { section: CSSection }) {
 
       {section.stats && section.stats.length > 0 && (
         // Left-aligned stats row, capped at ~1025px; number→label gap 16px.
-        <div className="cs-stats" style={{ display: "grid", gridTemplateColumns: `repeat(${section.stats.length}, 1fr)`, width: "100%", maxWidth: 1025, margin: 0 }}>
+        <div className="cs-stats" style={{ display: "grid", gridTemplateColumns: `repeat(${section.stats.length}, 1fr)`, width: "100%", margin: 0 }}>
           {section.stats.map((s, i) => (
             <div key={s.label} style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 16, textAlign: "left", borderLeft: i > 0 ? `1px solid ${HAIRLINE}` : "none", paddingLeft: i > 0 ? 32 : 0 }}>
               <StatNumber value={s.value} delay={i * 120} />
